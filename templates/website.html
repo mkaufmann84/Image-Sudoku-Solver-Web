@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<head>
+    <title>web</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/webstyles.css')}}">
+    <script>
+
+
+
+    </script>
+</head>
+<body>
+    <a link href= "https://github.com/mkaufmann84">Github
+    </a>
+    <div>
+        <form method = "GET", action="/solve">
+        <table>
+            <tr>
+                <td class="lu" ><input name = "00"></td>
+
+                <td class="u"> <input name = "01" > </td>
+                <td class="u"><input  name = "02"></td>
+                <td class="lu"><input  name = "03"></td>
+                <td class="u"><input  name = "04" ></td>
+                <td class="u"><input  name = "05"></td>
+                <td class="lu"><input name = "06" ></td>
+                <td class="u"><input  name = "07"  ></td>
+                <td class="ur"><input name = "08"></td>
+            </tr>
+            <tr>
+                <td class="l"><input name = "10" ></td>
+                <td><input name = "11" ></td>
+                <td class="r"><input name = "12" ></td>
+                <td><input name = "13" ></td>
+                <td><input name = "14"  ></td>
+                <td class="r"><input name = "15" ></td>
+                <td><input name = "16" ></td>
+                <td><input name = "17" ></td>
+                <td class="r"><input name = "18" ></td>
+         </tr>
+
+            <tr>
+ 
+                <td class="l"><input name = "20" ></td>
+                <td><input name = "21" ></td>
+                <td class="r"><input name = "22" ></td>
+                <td><input name = "23" ></td>
+                <td><input  name = "24"></td>
+                <td class="r"><input name = "25" ></td>
+                <td><input name = "26" ></td>
+                <td><input name = "27" ></td>
+                <td class="r"><input name = "28" ></td>
+            </tr>
+
+            <tr>
+                <td class="lu"><input name="30"></td>
+                <td class="u"><input name="31" ></td>
+                <td class="u"><input name="32" ></td>
+                <td class="lu"><input name="33" ></td>
+                <td class="u"><input  name="34"></td>
+                <td class="u"><input name="35" ></td>
+                <td class="lu"><input name="36" ></td>
+                <td class="u"><input name="37" ></td>
+                <td class="ur"><input  name="38"></td>
+            </tr>
+
+            <tr>
+                <td class="l"><input name="40" ></td>
+                <td><input name="41" ></td>
+                <td class="r"><input name="42" ></td>
+                <td><input name="43" ></td>
+                <td><input name="44" ></td>
+                <td class="r"><input name="45" ></td>
+                <td><input name="46" ></td>
+                <td><input name="47" ></td>
+                <td class="r"><input name="48" ></td>
+            </tr>
+
+            <tr>
+                <td class="l"><input name="50" ></td>
+                <td><input name="51" ></td>
+                <td class="r"><input name="52" ></td>
+                <td><input name="53" ></td>
+                <td><input name="54" ></td>
+                <td class="r"><input name="55" ></td>
+                <td><input name="56" ></td>
+                <td><input name="57" ></td>
+                <td class="r"><input name="58" ></td>
+            </tr>
+
+            <tr>
+                <td class="lu"><input name="60" ></td>
+                <td class="u"><input name="61" ></td>
+                <td class="u"><input  name="62"></td>
+                <td class="lu"><input name="63" ></td>
+                <td class="u"><input name="64" ></td>
+                <td class="u"><input  name="65"></td>
+                <td class="lu"><input name="66" ></td>
+                <td class="u"><input name="67" ></td>
+                <td class="ur"><input name="68" ></td>
+            </tr>
+
+            <tr>
+                <td class="l"><input name = "70" ></td>
+                <td><input name = "71" ></td>
+                <td class="r"><input name = "72" ></td>
+                <td><input name = "73" ></td>
+                <td><input name = "74" ></td>
+                <td class="r"><input name = "75" ></td>
+                <td><input name = "76" ></td>
+                <td><input name = "77" ></td>
+                <td class="r"><input name = "78" ></td>
+            </tr>
+
+            <tr>
+                <td class="bl"><input  name = "80"></td>
+                <td class="b"><input name = "81" ></td>
+                <td class="b"><input name = "82" ></td>
+                <td class="bl"><input name = "83" ></td>
+                <td class="b"><input name = "84" ></td>
+                <td class="b"><input name = "85" ></td>
+                <td class="bl"><input name = "86" ></td>
+                <td class="b"><input name = "87" ></td>
+                <td class="br"><input name = "88" ></td>
+            </tr>
+        
+        
+        </table>
+        
+        <button type="submit"  id="solve">Solve</button>
+    </form>
+    </div>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <p><input class = "button" type="file" name="file"></p>
+        <p> <button class = "button" type="submit">Submit file</button></p>
+      </form>
+      <form method ="POST" action="/load">
+      <button class = "button" type="submit">Load Models</button>
+      </form>
+    
+
+
+</body>

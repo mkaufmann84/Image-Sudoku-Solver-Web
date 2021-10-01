@@ -1,0 +1,68 @@
+table{
+    border-collapse: collapse;
+    /*margin-right: auto;
+    margin-left: auto;*/
+    margin-top: 15mm;
+width: 100px;
+height: 100px ;}
+input {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    font: 400 13.3333px Arial;
+    padding: 0px;
+    outline:none;
+    text-align:center;
+    border: 0;
+}
+
+.button{
+    width:auto;
+    height:auto;
+
+}
+
+td{
+
+    border-left: black solid 1px;
+    border-top: black solid 1px;
+
+    
+    
+}
+.lu{
+    border-top: solid black 3px;
+    border-left: solid black 3px;
+    padding: 0px;
+}
+.l{
+    border-left:solid black 3px ;
+    padding: 0px;
+}
+.u{
+    border-top: solid black 3px;
+    padding: 0px;
+}
+.ur{
+    border-top: solid black 3px;
+    border-right: solid black 3px;
+    padding:0px;
+}
+.r{
+    border-right: solid black 3px;
+    padding:0px;
+}
+.b{
+    border-bottom: solid black 3px;
+    padding: 0px;
+}
+.bl{
+    border-bottom: solid black 3px;
+    border-left: solid black 3px;
+    padding: 0px;
+}
+.br{
+    border-bottom: solid black 3px;
+    border-right: solid black 3px;
+    padding: 0px;
+}
