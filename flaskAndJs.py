@@ -4,10 +4,6 @@ from flask import Flask, render_template, request, redirect
 app = Flask(__name__)
 
 import copy
-
-
-
-from PIL import Image
 from solver_class import ws
 
 
@@ -46,5 +42,5 @@ def register():
 
    
 
-if __name__ == '__main__':
-   app.run() #live updates
+#if __name__ == '__main__':
+#   app.run() #live updates
