@@ -15,7 +15,7 @@ async function load_class(){
 }
 
 
-var model = load_s();
+var model = load();
 var model_s = load_s();
 var model_class =load_class();
 
