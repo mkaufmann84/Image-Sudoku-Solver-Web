@@ -96,6 +96,7 @@ document.querySelector('#file_upload').addEventListener('change', function() {
       var a = tf.image.grayscaleToRGB(g_scale).cast("int32");
 
       a=a.expandDims();
+      tf.browser.toPixels(a.squeeze(),canvas);
       debugc.innerHTML = "a loaded"
       model.then(model => {
       
