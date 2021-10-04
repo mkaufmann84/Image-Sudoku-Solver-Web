@@ -24,41 +24,72 @@ document.querySelector('#file_upload').addEventListener('change', function() {
   console.log("change")
   
   const fileInput = document.getElementById('file_upload').files[0];
-  console.log(fileInput);
+  console.log(fileInput,"finput");
+  if (fileInput.name.includes("HEIC"))
+  {
+    console.log("HEIC is running")
+
+    blobURL = URL.createObjectURL(fileInput);
+    fetch(blobURL)
+      .then((res) => res.blob())
+      .then((blob) => heic2any({ blob }))
+      .then((conversionResult) => {
+          console.log("conversion result")
+          blobby = conversionResult// conversionResult is a BLOB
+          url = URL.createObjectURL(blobby)
+          solve(url)
+
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("failure")
+          // see error handling section
+      });
+  
+  }else
+  {
+    console.log("Non-HEIC")
+    readerDim = new FileReader();
+    readerDim.readAsDataURL(fileInput);
+    console.log(readerDim,"readerDim")
+    readerDim.onload = function (e) 
+    {
+      solve(e.target.result)
+  
+      //Initiate the JavaScript Image object.
+    }
+  }
+
+  //don't think FileReader will work with heic so I will have to run ifs and elses here
 
 
-  readerDim = new FileReader();
-  readerDim.readAsDataURL(fileInput);
 
-  readerDim.onload = function (e) {
 
-    //Initiate the JavaScript Image object.
+  function solve(url_to_src) {
     var image = new Image();
-
     //Set the Base64 string return from FileReader as source.
-    image.src = e.target.result;
+    image.src = url_to_src
 
     //Validate the File Height and Width.
     image.onload = function () {
       //var height = this.height;
       //var width = this.width;
-      //console.log(width,height);//width,height  
+
       var a = tf.browser.fromPixels(image);
+      console.log(a.shape,image.width,image.height)
       
       //convert image into 3 channel grayscale
       var g_scale =a.mean(2).expandDims(-1);
       var a = tf.image.grayscaleToRGB(g_scale).cast("int32");
 
       a=a.expandDims();
-      
-      //console.log(a,"a")
+
       model.then(model => {
       
       async function pred() {
         console.log('Start');
         const result = await model.executeAsync(a);
-      //  console.log('End')
-        //console.log( await result[6].array());
+
         //const classes = await result[2].array();
         //const accuracy = await result[4].array();
         const boxes = await result[6].array(); //y,x,height,width
@@ -74,27 +105,15 @@ document.querySelector('#file_upload').addEventListener('change', function() {
        // ctx.drawImage(image,0,0);
        tf.browser.toPixels(a.squeeze(),canvas);
         const [y,x,height,width] =boxes[0][0];//x1, y1, x2, y2, not height or width
-       // console.log("drawing...");
-        const xc = Math.round(x*image.width);
-        const yc = Math.round(y*image.height);
-        const x2c = Math.round(width*image.width);
-        const y2c = Math.round(height*image.height);
 
-        //console.log(xc,yc,x2c ,y2c);
-        //ctx.rect(xc, yc, x2c-xc, y2c-yc);
-        //ctx.stroke();
-        //console.log(a.shape)
+        const xc = Math.round(x*a.shape[2]);
+        const yc = Math.round(y*a.shape[1]);
+        const x2c = Math.round(width*a.shape[2]);
+        const y2c = Math.round(height*a.shape[1]);
+
         var sliced = a.slice([0,yc,xc,0],[1,y2c-yc,x2c-xc,3] );
 
-
-
-        tf.browser.toPixels(sliced.squeeze(),canvas);
-
-
-       // console.log(sliced)
-        //await new Promise(r => setTimeout(r, 1000));
-        //ctx.clearRect(0, 0, canvas.width, canvas.height)
-        
+        tf.browser.toPixels(sliced.squeeze(),canvas2);
 
 
         model_s.then(model_s =>{
@@ -112,20 +131,33 @@ document.querySelector('#file_upload').addEventListener('change', function() {
             //6 is apparently the classes
             //7 is num of predictions?
 
-
-            console.log("box");
             //const [y1,x1,height1,width1] =boxes1[0][0];
 
             b81 = boxes1[0].splice(0,81)
             var indmap = new Map()
+
+            const canvas_2 = document.querySelector('#canvas2');
+            const ctx = canvas_2.getContext('2d');
+
             for (let i=0; i<81;i++){
+
               indmap.set(i,b81[i]);
+              let y11 = Math.round(b81[i][0]*sliced.shape[1])
+              let x11 = Math.round(b81[i][1]*sliced.shape[2])
+              let y21 = Math.round(b81[i][2]*sliced.shape[1])
+              let x21 = Math.round(b81[i][3]*sliced.shape[2])
+
+
+              ctx.rect(x11,y11 , x21-x11, y21-y11);
+              ctx.stroke();
             }
-            console.log(indmap.get(0))
+            //console.log(indmap.get(0))
             var y1Ordered = [0]
+
             Array.prototype.insert = function ( index, item ) {
               this.splice( index, 0, item );
                 };
+
 
             for (let i=1;i<81;i++){
               let tElem = indmap.get(i);
@@ -186,44 +218,21 @@ document.querySelector('#file_upload').addEventListener('change', function() {
                 }
               }
             strata[i] =order;
-            console.log(strata[i],i);
+
           }
             
 
-            console.log(strata);
-            console.log(indmap);
             console.log("drawing...");
-
-            /*const xc1 = Math.round(x1*(x2c-xc));
-            const yc1 = Math.round(y1*(y2c-yc));
-            const x2c1 = Math.round(width1*(x2c-xc));
-            const y2c1 = Math.round(height1*(y2c-yc));*/
-
-            //console.log(xc1,yc1,x2c1 ,y2c1);//x1, y1, x2, y2, not height or width. 
-            //Also y values shpuld be console.log first 
-
-            //ctx.rect(xc, yc, x2c-xc, y2c-yc);
-            //ctx.stroke();
 
             let iter1=tf.fill([81], 0).cast('int32')
             var cropped = tf.image.cropAndResize(sliced,b81,iter1,[32,32],'bilinear');
             console.log(cropped,"cropped")
-            //test_cropped = cropped.slice([1,0,0,0],[1,32,32,3])
+
             
             console.log("---0---")
-            //ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-            //ctx.clearRect(0, 0, canvas.width, canvas.height) //Clears canvas
-            //tf.browser.toPixels(test.squeeze(),canvas);
            
             model_class.then(model_class =>{
-              //var class_t =test.mean(3);
-              //console.log("1",class_t);
-              //x1, y1, x2, y2,
-              //class_t = class_t.expandDims(-1)
-              //var im32 = tf.image.resizeBilinear(class_t.cast('float32').div(255.0),[32,32]);
-              //tf.image.resizeNearestNeighbor()
-              //tf.browser.toPixels(im32.squeeze(),canvas);
+
               async function ttt(){
                 function index_max(arr){
                   let ind = -1;
@@ -239,11 +248,6 @@ document.querySelector('#file_upload').addEventListener('change', function() {
                   } //end function bracket
               console.log("---1---")
 
-             // console.log(im32.max().print())
-              //var input = im32.mul(255)
-              //console.log(input.max().print())
-              //await new Promise(r => setTimeout(r, 1000));
-
               var l_inputs = document.querySelectorAll('input');
               for (let group =0;group<9;group++)
               {
@@ -257,7 +261,6 @@ document.querySelector('#file_upload').addEventListener('change', function() {
                   
                   var result_class = await model_class.execute(test_cropped).array();
                   var ind = index_max(result_class[0])
-                  console.log(ind);
                   if(ind==0){
                     ind=''
                   }
@@ -292,3 +295,6 @@ document.querySelector('#file_upload').addEventListener('change', function() {
 
 
 }, false);
+
+
+    
