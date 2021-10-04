@@ -19,14 +19,21 @@ var model = load();
 var model_s = load_s();
 var model_class =load_class();
 
+var debugc = document.querySelector("#debugc")
+console.log(debugc,"here")
+debugc.innerHTML = "Debug"
+
+
 console.log("laoded")
 document.querySelector('#file_upload').addEventListener('change', function() {
   console.log("change")
   
   const fileInput = document.getElementById('file_upload').files[0];
   console.log(fileInput,"finput");
+  debugc.innerHTML = "found file"
   if (fileInput.name.includes("HEIC"))
   {
+    debugc.innerHTML = "Heic is running"
     console.log("HEIC is running")
 
     blobURL = URL.createObjectURL(fileInput);
@@ -37,10 +44,12 @@ document.querySelector('#file_upload').addEventListener('change', function() {
           console.log("conversion result")
           blobby = conversionResult// conversionResult is a BLOB
           url = URL.createObjectURL(blobby)
+          debugc.innerHTML = "blobby created. solving"
           solve(url)
 
       })
       .catch((e) => {
+        debugc.innerHTML = "failure"
         console.log(e);
         console.log("failure")
           // see error handling section
@@ -48,10 +57,12 @@ document.querySelector('#file_upload').addEventListener('change', function() {
   
   }else
   {
+    debugc.innerHTML = "non-heic is running"
     console.log("Non-HEIC")
     readerDim = new FileReader();
     readerDim.readAsDataURL(fileInput);
     console.log(readerDim,"readerDim")
+    debugc.innerHTML ="waiting for non heic .onload"
     readerDim.onload = function (e) 
     {
       solve(e.target.result)
@@ -66,12 +77,14 @@ document.querySelector('#file_upload').addEventListener('change', function() {
 
 
   function solve(url_to_src) {
+    debugc.innerHTML = "made it to solve"
     var image = new Image();
     //Set the Base64 string return from FileReader as source.
     image.src = url_to_src
 
     //Validate the File Height and Width.
     image.onload = function () {
+      debugc.innerHTML = "image loaded"
       //var height = this.height;
       //var width = this.width;
 
@@ -83,13 +96,13 @@ document.querySelector('#file_upload').addEventListener('change', function() {
       var a = tf.image.grayscaleToRGB(g_scale).cast("int32");
 
       a=a.expandDims();
-
+      debugc.innerHTML = "a loaded"
       model.then(model => {
       
       async function pred() {
         console.log('Start');
         const result = await model.executeAsync(a);
-
+        debugc.innerHTML = "made first predictions"
         //const classes = await result[2].array();
         //const accuracy = await result[4].array();
         const boxes = await result[6].array(); //y,x,height,width
