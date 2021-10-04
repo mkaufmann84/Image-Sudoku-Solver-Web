@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <head>
     <title>web</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/webstyles.css')}}">
+    <!-- <link rel="stylesheet" type="text/css" href="../static/styles/webstyles.css">  -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/webstyles.css')}}"> 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.9.0/dist/tf.min.js"></script>
+    <!-- <script src = "../static/heic2any.js"></script> -->
+   <script src="{{ url_for('static', filename='heic2any.js')}}"> </script>
 </head>
 
 <body>
@@ -131,15 +134,19 @@
   <p><input type="file" style="height: auto;width: auto;" id="file_upload" name="file"></p>
 </form>
 <script src="{{url_for('static', filename='main.js')}}"></script>
+<!-- <script src = "../static/main.js"></script> -->
 
+<p1>
 <canvas style="border: 5px solid black " id="canvas"  >
-  <img id ="display" width = "..."  height="..." >
+  <img id ="display">
 </canvas>
-
-
-
-    
-    
+</p1>
+<p2>
+<canvas style="border: 5px solid black " style="position: relative" id="canvas2"  >
+    <img id ="display">
+  </canvas>
+</p2>
+  
 
 
 </body>
