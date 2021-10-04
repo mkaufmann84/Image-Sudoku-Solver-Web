@@ -306,8 +306,10 @@ document.querySelector('#file_upload').addEventListener('change', function() {
       }).catch((e) =>{
         debugc.inerHTML ="fail at model load"
         debugc.inerHTML = e
+        
+    });
+    }
 
-    };
   };
 
 
