@@ -96,8 +96,9 @@ document.querySelector('#file_upload').addEventListener('change', function() {
       var a = tf.image.grayscaleToRGB(g_scale).cast("int32");
 
       a=a.expandDims();
-      tf.browser.toPixels(a.squeeze(),canvas);
+      //tf.browser.toPixels(a.squeeze(),canvas);
       debugc.innerHTML = "a loaded"
+      
       model.then(model => {
       
       async function pred() {
@@ -117,7 +118,7 @@ document.querySelector('#file_upload').addEventListener('change', function() {
         canvas.width= image.width;
   
        // ctx.drawImage(image,0,0);
-       tf.browser.toPixels(a.squeeze(),canvas);
+       //tf.browser.toPixels(a.squeeze(),canvas);
         const [y,x,height,width] =boxes[0][0];//x1, y1, x2, y2, not height or width
 
         const xc = Math.round(x*a.shape[2]);
@@ -127,7 +128,7 @@ document.querySelector('#file_upload').addEventListener('change', function() {
 
         var sliced = a.slice([0,yc,xc,0],[1,y2c-yc,x2c-xc,3] );
 
-        tf.browser.toPixels(sliced.squeeze(),canvas2);
+        //tf.browser.toPixels(sliced.squeeze(),canvas2);
 
 
         model_s.then(model_s =>{
@@ -162,8 +163,8 @@ document.querySelector('#file_upload').addEventListener('change', function() {
               let x21 = Math.round(b81[i][3]*sliced.shape[2])
 
 
-              ctx.rect(x11,y11 , x21-x11, y21-y11);
-              ctx.stroke();
+              //ctx.rect(x11,y11 , x21-x11, y21-y11);
+              //ctx.stroke();
             }
             //console.log(indmap.get(0))
             var y1Ordered = [0]
