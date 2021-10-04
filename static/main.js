@@ -303,7 +303,9 @@ document.querySelector('#file_upload').addEventListener('change', function() {
       console.log('Predicting')
       var box =  pred();
 
-      });
+      }).catch((e) =>{
+        debugc.inerHTML ="fail at model load"
+        debugc.inerHTML = e
 
     };
   };
