@@ -13,16 +13,20 @@ async function load_class(){
   return model_class
 
 }
+var debugc = document.querySelector("#debugc")
+debugc.innerHTML = "not ready..."
+document.querySelector('#bit').innerHTML = ['Is device capable of 32 bit:',tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE'),'   // Is 32 bit enabled:',tf.ENV.getBool('WEBGL_RENDER_FLOAT32_ENABLED')].join('')
+if (tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE')== false)
+{
+    tf.setBackend('cpu')
+}
 
+tf.ready().then(()=>{debugc.innerHTML = "Ready!"})
 
 var model = load();
 var model_s = load_s();
 var model_class =load_class();
 
-
-var debugc = document.querySelector("#debugc")
-console.log(debugc,"here")
-debugc.innerHTML = "Debug"
 
 
 console.log("laoded")
@@ -174,7 +178,8 @@ document.querySelector('#file_upload').addEventListener('change', function() {
             
             await tf.browser.toPixels(sliced.squeeze(),canvas2);
             
-
+            ctx2.lineWidth = 3;
+            ctx2.strokeStyle = 'red';
             for (let i=0; i<81;i++){
 
               indmap.set(i,b81[i]);
@@ -184,8 +189,8 @@ document.querySelector('#file_upload').addEventListener('change', function() {
               let x21 = Math.round(b81[i][3]*sliced.shape[2])
 
 
-              ctx2.rect(x11,y11 , x21-x11, y21-y11);
-              ctx2.stroke();
+              ctx2.strokeRect(x11,y11 , x21-x11, y21-y11);
+              //ctx2.stroke();
             }
 
             let y1Ordered = [0]
