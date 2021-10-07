@@ -38,7 +38,8 @@ async function load() {
     let fileInput = document.getElementById('file_upload').files[0];
     console.log(fileInput,"finput");
     debugc.innerHTML = "found file"
-    if (fileInput.name.includes("HEIC"))
+    document.querySelector('#bit').innerHTML = fileInput.name
+    if (fileInput.name.includes("HEIC")||fileInput.name.includes("heic"))
     {
       debugc.innerHTML = "Heic is running"
       console.log("HEIC is running")
