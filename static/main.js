@@ -20,10 +20,10 @@ async function load() {
   
   if (tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE')== false ||tf.ENV.getBool('WEBGL_RENDER_FLOAT32_ENABLED')==false)
   {
-      document.querySelector('#bit').innerHTML = 'Device you are using is unlikely to have the capabilities, as it does not have webgl render float32 capabilities or it is turned off. This means the photo upload is highly unlikely to work. Use a different device or manually input the puzzle.'
+      document.querySelector('#bit').innerHTML = 'Device you are using is unlikely to use the photo upload as it does not have webgl render float32 capabilities or it is turned off. This is because the photo upload and machine learning predictions are done in javascript on your computer. Consequently, the photo upload is highly unlikely to work. Use a different device or manually input the puzzle.'
       tf.setBackend('cpu')
   }else{
-      document.querySelector('#bit').innerHTML = 'Device is capable of making predictions.'
+      document.querySelector('#bit').innerHTML = 'Device is capable of photo upload.'
   }
   
   tf.ready().then(()=>{debugc.innerHTML = "Ready!"})
