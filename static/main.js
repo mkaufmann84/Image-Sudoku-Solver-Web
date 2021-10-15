@@ -17,10 +17,13 @@ async function load() {
   tf.enableProdMode();
   var debugc = document.querySelector("#debugc")
   debugc.innerHTML = "not ready..."
-  document.querySelector('#bit').innerHTML = ['Is device capable of 32 bit:',tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE'),'   // Is 32 bit enabled:',tf.ENV.getBool('WEBGL_RENDER_FLOAT32_ENABLED')].join('')
-  if (tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE')== false)
+  
+  if (tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE')== false ||tf.ENV.getBool('WEBGL_RENDER_FLOAT32_ENABLED')==false)
   {
+      document.querySelector('#bit').innerHTML = 'Device you are using is unlikely to have the capabilities, as it does not have webgl render float32 capabilities or it is turned off. This means the photo upload is highly unlikely to work. Use a different device or manually input the puzzle.'
       tf.setBackend('cpu')
+  }else{
+      document.querySelector('#bit').innerHTML = 'Device is capable of making predictions.'
   }
   
   tf.ready().then(()=>{debugc.innerHTML = "Ready!"})
