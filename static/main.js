@@ -20,7 +20,7 @@ async function load() {
   
   if (tf.ENV.getBool('WEBGL_RENDER_FLOAT32_CAPABLE')== false ||tf.ENV.getBool('WEBGL_RENDER_FLOAT32_ENABLED')==false)
   {
-      document.querySelector('#bit').innerHTML = 'Device you are using is unlikely to use the photo upload as it does not have webgl render float32 capabilities or it is turned off. This is because the photo upload and machine learning predictions are done in javascript on your computer. Consequently, the photo upload is highly unlikely to work. Use a different device or manually input the puzzle.'
+      document.querySelector('#bit').innerHTML = 'Device you are using is unlikely to work using photo upload as it does not have webgl render float32 capabilities or it is turned off. The photo prediction is done on this device (javascript) , not a server. It may work, but it is recommended you use a different device.'
       tf.setBackend('cpu')
   }else{
       document.querySelector('#bit').innerHTML = 'Device is capable of photo upload.'
@@ -96,14 +96,15 @@ async function load() {
   
       //Validate the File Height and Width.
       image.onload = function () {
-        debugc.innerHTML = "image loaded"
+        debugc.innerHTML = "Image preprocessing step"
   
   
         //convert image into 3 channel grayscale
   
-  
+        //Time to draw 
+        var og = tf.browser.fromPixels(image);
         let a= tf.tidy(() => {
-          let og = tf.browser.fromPixels(image);
+          
           let g_scale =og.mean(2).expandDims(-1);
           let al = tf.image.grayscaleToRGB(g_scale).cast("int32");
           let ald = al.expandDims();
@@ -116,15 +117,32 @@ async function load() {
               //x*max = 1000
               let percent = 1000/max;
               let news = [Math.round(ald.shape[1]*percent),Math.round(ald.shape[2]*percent)];
-              ald = tf.image.resizeBilinear(ald.cast('float32').div(255.0),news);
+              ald = tf.image.resizeNearestNeighbor(ald.cast('float32').div(255.0),news);
               ald = ald.mul(255).cast("int32");
   
               console.log(ald.shape)
           }
           return ald
         });
+
         
-        debugc.innerHTML = "a loaded"
+        let canvas = document.querySelector('#canvas');
+        let ctx1 = canvas.getContext('2d');
+        ctx1.clearRect(0, 0, canvas.width, canvas.height)
+
+
+        let canvas2 = document.querySelector('#canvas2');
+        let ctx2 = canvas2.getContext('2d');
+        ctx2.clearRect(0, 0, canvas2.width, canvas2.height)        
+
+
+        canvas.height = image.height;
+        canvas.width= image.width;
+        tf.tidy(()=>{
+        tf.browser.toPixels(og.squeeze(),canvas)});
+
+        
+        debugc.innerHTML = "predicting..."
         console.log("1",tf.memory())
   
         model.then(model => {
@@ -132,33 +150,20 @@ async function load() {
         async function pred() {
           console.log('Start');
           
-          debugc.innerHTML = "made first predictions"
+          
           let result = await model.executeAsync(a);
 
           let boxes = await result[2].array(); //y,x,height,width,2
+          debugc.innerHTML = "Made first predictions"
 
           let fin = boxes[0][0];
   
   
 
           
-          //Time to draw 
-          let canvas = document.querySelector('#canvas');
-          let ctx1 = canvas.getContext('2d');
-          ctx1.clearRect(0, 0, canvas.width, canvas.height)
-          //resize
-  
-          canvas.height = image.height;
-          canvas.width= image.width;
-    
-         // ctx.drawImage(image,0,0);
-         tf.tidy(()=>{
-             tf.browser.toPixels(a.squeeze(),canvas)});
+
   
           let [y,x,height,width] = fin
-  
-  
-  
           let xc = Math.round(x*a.shape[2]);
           let yc = Math.round(y*a.shape[1]);
           let x2c = Math.round(width*a.shape[2]);

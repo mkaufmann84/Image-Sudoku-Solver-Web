@@ -42,5 +42,5 @@ def register():
 
    
 
-#if __name__ == '__main__':
-#   app.run() #live updates
+if __name__ == '__main__':
+  app.run(debug=True) #live updates

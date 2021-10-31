@@ -9,11 +9,9 @@
     </script>
 </head>
 <body>
-    <a link href= "https://github.com/mkaufmann84">Github
-    </a>
     <div>
         <form method = "GET", action="/solve">
-        <table>
+        <table class = "tablegrid">
             <tr>
                 <td class="lu" ><input name = "00" value ={{n00}}></td>
 
@@ -125,15 +123,26 @@
         
         
         </table>
-        
-        <button type="submit"  id="solve">Solve</button>
+        <div style ="text-align: center;">
+
+        <button type="submit" class="sbutton" id="solve">Solve</button>
     </form>
     <form method = "GET" action="/reset">
-        <button type="submit"> Reset </button>
+        <button type="submit" class="sbutton"> Reset </button>
     
     </form> 
     </div>
+</div>
     
+<p class = "explain">Explanation of the solver:</p>
+<p style="margin-left: 10px;" class="explain">
+    The solver uses a combination of inferences, along with a backtrack search algortihim if no inferences can be made. The inferences are basic, and mostly serve to help the search algorithim avoid picking a value that would break the rules of the sudoku puzzle. The search algorithim guesses the cell with the least number of options. So if it is known that one of the cells can only be a 1 or a 7, that guess will be made on that cell.  
+</p>
 
+<p class = "explain">The code used to run this webpage along with code for solving the sudoku puzzle can be found on me github below:</p>
+<p style="margin-left: 10px;" class="explain">
+    <a link href= "https://github.com/mkaufmann84/sudoku_web">Source Code
+    </a>
+    
 
 </body>
