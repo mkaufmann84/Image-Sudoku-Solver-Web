@@ -1,5 +1,6 @@
 body {
   background-color: #55ABFF;
+  font-size: 100%;
 }
 
 table{
@@ -7,8 +8,8 @@ table{
     /*margin-right: auto;
     margin-left: auto;*/
     margin-top: 15mm;
-width: 100px;
-height: 100px ;}
+width: 250px;
+height: 250px ;}
 input {
     width: 20px;
     height: 20px;
@@ -26,13 +27,27 @@ input {
 
 }
 
-td{
+.tablegrid{
+    margin-top: 10px;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
 
+}
+
+.licanv{
+    list-style-type:none;
+    margin: 0px 0px;
+}
+
+p{
+    margin: 10px 0px;
+}
+
+td{
     border-left: black solid 1px;
     border-top: black solid 1px;
 
-    
-    
 }
 .lu{
     border-top: solid black 3px;
@@ -69,4 +84,22 @@ td{
     border-bottom: solid black 3px;
     border-right: solid black 3px;
     padding: 0px;
+}
+
+.sbutton{
+    width: 244px;
+    height: 40px;
+    font-size: 30px;
+    border: none;
+    background-color: #00DC2D
+    
+}
+.sbutton:hover{
+    background-color: #00941E;
+    cursor: pointer;
+}
+
+.explain{
+    font-size: 120%;
+
 }

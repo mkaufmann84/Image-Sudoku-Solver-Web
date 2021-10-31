@@ -9,11 +9,10 @@
 </head>
 
 <body>
-    <a link href= "https://github.com/mkaufmann84">Github
-    </a>
-    <div>
+
+    <div >
         <form method = "GET", action="/solve">
-        <table>
+        <table class = "tablegrid">
             <tr>
                 <td class="lu" ><input name = "00"></td>
                 <td class="u"> <input name = "01" > </td>
@@ -124,11 +123,14 @@
         
         
         </table>
-        
-        <button type="submit"  id="solve">Solve</button>
+    <div style ="text-align: center;">
+        <button type="submit" class="sbutton" id="solve">Solve</button>
+    </div>
     </form>
     </div>
-<p id="debugc">tes1t</p>
+
+
+<p id="debugc">Debugger...</p>
 <p id="bit">Wait...</p>
 <form method="POST" action="/upload" enctype="multipart/form-data">
   <p><input type="file" style="height: auto;width: auto;" id="file_upload" name="file"></p>
@@ -136,23 +138,42 @@
 <script src="{{url_for('static', filename='main.js')}}"></script>
 <!-- <script src = "../static/main.js"></script> -->
 
-<p1>
-<canvas style="border: 5px solid black " id="canvas"  >
-  <img id ="display">
-</canvas>
-</p1>
-<p2>
-<canvas style="border: 5px solid black "  id="canvas2"  >
+
+<li class="licanv"><p style="margin: 4px;">Original Photo:</p>
+    <canvas style="border: 5px solid black " id="canvas"  >
     <img id ="display">
-  </canvas>
-</p2>
+    </canvas>
+</li>
 
-  
+<li class="licanv">
+    <p style="margin: 4px;"> Output photo:</p>
+    <canvas style="border: 5px solid black "  id="canvas2"  >
+        <img id ="display">
+    </canvas>
+</li>
 
+<p class = "explain">Explanation of the photo input:</p>
+<p style="margin-left: 10px;" class="explain">
+    The first step is grayscaling the image because the
+    addition of color is unnecessary and can make it harder for the model
+    to predict the pattern. Also, if the image is large (4k image) then it is resized.
+    <br><br>The processed image goes to the first model which locates where the grid is in the photo. The output photo will be the part of the original image that is thought to soley contain the sudoku board.
+    <br><br>The part of the image that contains the sudoku board goes to a second model to predict where each cell is on the image. The two parts are necessary as in the background of the original image there could be something that looks like it could belong on the sudoku board, but does not actually. Both models use object detection, which means it predicts a bounding box around where it thinks the object is located. In the output image there will be red boxes around each grid. Also, the boxes are sorted by their coordnites. The upper-left most cell will have one of the nine highest upper value, and out of the nine highest it has the left most coordnite, so it is the upper-most coordnite. This strategy sorts the boxes. 
+    <br><br>
+    The third and final step is predicting the digit in each box. This part uses a classification model. Afterwards, the predictions are displayed on the sudoku grid, and are ready to solve. 
+</p>
+<br><br><br><br>
 
+<p class = "explain">Explanation of the solver:</p>
+<p style="margin-left: 10px;" class="explain">
+    The solver uses a combination of inferences, along with a backtrack search algortihim if no inferences can be made. The inferences are basic, and mostly serve to help the search algorithim avoid picking a value that would break the rules of the sudoku puzzle. The search algorithim guesses the cell with the least number of options. So if it is known that one of the cells can only be a 1 or a 7, that guess will be made on that cell.  
+</p>
 
-    
-    
+<p class = "explain">The code used to run this webpage along with code for solving the sudoku puzzle can be found on me github below:</p>
+<p style="margin-left: 10px;" class="explain">
+    <a link href= "https://github.com/mkaufmann84/sudoku_web">Source Code
+    </a>
+
 
 
 </body>
