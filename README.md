@@ -1,4 +1,2 @@
 # sudoku_web
-Website that contains a sudoku solver based off an image. 
-
-Online at maxcreates.tech
+Website that can solve a sudoku puzzle based off an image of the puzzle.
